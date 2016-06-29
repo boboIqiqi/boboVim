@@ -83,8 +83,6 @@ set formatoptions=tcqro     " 使得注释换行时自动加上前导的空格�
 "set hidden                  " 允许在有未保存的修改时切换缓冲区，
                             " 此时的修改由切换由 vim 负责保存
 set history=500             " 设置冒号命令和搜索命令的命令历史列表的长度为 50
-cnoremap <C-p> <Up>         " 选择命令时，不用通过up和Down键进行选择
-cnoremap <C-n> <Down>
 
 
 set hlsearch                " 搜索时高亮显示被找到的文本
@@ -218,9 +216,52 @@ endfunction
 
 """"我的设置
 set clipboard=unnamed  "共享剪切板
-:nnoremap K a<C-j><Esc>  "普通模式下，K换行
+"普通模式下换行
+:nnoremap <C-j> i<C-j><Esc>
+:nnoremap <C-k> a<C-j><Esc>
+
 "启动后最大化
 autocmd GUIENTER * simalt ~x
 set number
 colorscheme desert
 " colorscheme torte
+
+"选择命令时，不用通过up和Down键进行选择
+cnoremap  <Up>
+cnoremap  <Down>
+
+set incsearch "增量查找
+"设置Ex命令和查找命令的记录历史条数
+set history=200
+set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1 
+"set gfn=Consolas:h11
+"set textwidth=0
+
+
+"设置Vim使用的shell为msysGit的shell
+":set shell=\"c:\program\ files\unix\sh.exe\"\ -f
+:set shell="C:\Program Files\Git\bin\sh.exe" -f
+
+"F5键插入当前系统的时间
+:nnoremap <F5> "=strftime("%Y%m%d %T")<CR>p
+:inoremap <F5> <C-R>=strftime("%Y%m%d %T")<CR>p
+
+""""""""""""""""""""""
+"下面是关于Vundle插件的设置
+filetype off
+"Vundle的路径
+set rtp+=$VIM/vimfiles/bundle/Vundle.vim
+"插件的安装路径
+call vundle#begin('$VIM/vimfiles/bundle/')
+Plugin 'gmarik/Vundle.vim'
+Plugin 'L9'
+
+call vundle#end()
+filetype plugin indent on
+
+Bundle 'OmniCppComplete'
+Bundle 'winmanager'
+Bundle 'taglist.vim'
+Bundle 'SuperTab'
+Bundle 'tpope/vim-surround.git'
+""""""""""""""""""""""""""""

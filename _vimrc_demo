@@ -31,7 +31,7 @@ endif
 if has("gui_running")
     if has("win32")
         " 设定 windows 下 gvim 启动时最大化
-        autocmd GUIEnter * simalt ~x
+        "autocmd GUIEnter * simalt ~x
         " 设定 windows 下图形界面下的字体。该字体需要自己下载安装，下载地址：
         " http://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/1.10/ttf-bitstream-vera-1.10.zip
         " set guifont=Bitstream_Vera_Sans_Mono:h14:cANSI
@@ -221,7 +221,9 @@ set clipboard=unnamed  "共享剪切板
 :nnoremap <C-k> a<C-j><Esc>
 
 "启动后最大化
-autocmd GUIENTER * simalt ~x
+"autocmd GUIENTER * simalt ~x
+
+
 set number
 colorscheme desert
 " colorscheme torte

@@ -1,3 +1,10 @@
+":setlocal makeprg=ndk-build
+:setlocal makeprg=%NDK64_HOME%\ndk-build\ NDK_PROJECT_PATH=.\ APP_BUILD_SCRIPT=./Android.mk\ APP_ABI=arm64-v8a
+":setlocal efm=%f:%l:%m
+
+"增加按十进制
+set nrformats-=octal
+
 if has("gui_running")
     set encoding=utf-8
     set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
@@ -31,12 +38,13 @@ endif
 if has("gui_running")
     if has("win32")
         " 设定 windows 下 gvim 启动时最大化
-        "autocmd GUIEnter * simalt ~x
+        autocmd GUIEnter * simalt ~x
         " 设定 windows 下图形界面下的字体。该字体需要自己下载安装，下载地址：
         " http://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/1.10/ttf-bitstream-vera-1.10.zip
         " set guifont=Bitstream_Vera_Sans_Mono:h14:cANSI
         " 下面这个是我自己喜欢的一个字体
-        set guifont=YaHei_Consolas_Hybrid:h12:cGB2312
+        "set guifont=YaHei_Consolas_Hybrid:h12:cGB2312
+"        set guifontwide=幼圆:h13:cGB2312
     else
         " 设定 linux 下图形界面下的字体，该字体 Fedora 7 自带
         " set guifont=DejaVu\ LGC\ Sans\ Mono\ 14
@@ -85,14 +93,14 @@ set formatoptions=tcqro     " 使得注释换行时自动加上前导的空格�
 set history=500             " 设置冒号命令和搜索命令的命令历史列表的长度为 50
 
 
-set hlsearch                " 搜索时高亮显示被找到的文本
+set nohlsearch                " 搜索时高亮显示被找到的文本
 set ignorecase smartcase    " 搜索时忽略大小写，但在有一个或以上大写字母时
                             " 仍保持对大小写敏感
 set incsearch               " 输入搜索内容时就显示搜索结果
 set mouse=a                 " 设定在任何模式下鼠标都可用
 set nobackup                " 覆盖文件时不备份
 set nocompatible            " 设定 gvim 运行在增强模式下
-set noignorecase            " 默认区分大小写
+"set noignorecase            " 默认区分大小写
 set nolinebreak             " 在单词中间断行
 set number                  " 显示行号
 set ruler                   " 打开状态栏标尺
@@ -189,36 +197,68 @@ set nocompatible
 "source $VIMRUNTIME/mswin.vim
 "behave mswin
  
-set diffexpr=MyDiff()
-function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  let eq = ''
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
-      let cmd = '""' . $VIMRUNTIME . '\diff"'
-      let eq = '"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
-endfunction
+" set diffexpr=MyDiff()
+" function MyDiff()
+"   let opt = '-a --binary '
+"   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+"   if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+"   let arg1 = v:fname_in
+"   if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+"   let arg2 = v:fname_new
+"   if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+"   let arg3 = v:fname_out
+"   if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+"   let eq = ''
+"   if $VIMRUNTIME =~ ' '
+"     if &sh =~ '\<cmd'
+"       let cmd = '""' . $VIMRUNTIME . '\diff"'
+"       let eq = '"'
+"     else
+"       let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+"     endif
+"   else
+"     let cmd = $VIMRUNTIME . '\diff'
+"   endif
+"   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+" endfunction
 
 """"我的设置
+let mapleader = "\<Space>"
+nnoremap <Leader>s :w<CR>
+
+"退出快捷键
+nnoremap <Leader>x :x<CR>
+nnoremap <Leader>q :q!<CR>
+
 set clipboard=unnamed  "共享剪切板
 "普通模式下换行
 :nnoremap <C-j> i<C-j><Esc>
 :nnoremap <C-k> a<C-j><Esc>
+
+"设置自动添加TOC目录
+nnoremap <Leader>t ggO[TOC]<Esc><C-o>
+nnoremap <Leader>1 I# 
+nnoremap <Leader>2 I## 
+nnoremap <Leader>3 I### 
+nnoremap <Leader>4 I#### 
+
+"关于定位到开头与结尾
+nnoremap <CR> G
+nnoremap <BS> gg
+
+"nnoremap <C-2> ## 
+"nnoremap <C-3> ### 
+
+":nnoremap <C-t> ggO[TOC]<Esc><C-o>
+
+"自制的注释与反注释快捷键
+":nnoremap <C-c> 0i//<Esc>
+":nnoremap <C-y> 0xx
+
+
+noremap <C-S>		:update<CR>
+vnoremap <C-S>		<C-C>:update<CR>
+inoremap <C-S>		<C-O>:update<CR><ESC>
 
 "启动后最大化
 "autocmd GUIENTER * simalt ~x
@@ -229,8 +269,8 @@ colorscheme desert
 " colorscheme torte
 
 "选择命令时，不用通过up和Down键进行选择
-cnoremap  <Up>
-cnoremap  <Down>
+"nnoremap  <Up>
+"nnoremap  <Down>
 
 set incsearch "增量查找
 "设置Ex命令和查找命令的记录历史条数
@@ -242,28 +282,77 @@ set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 
 "设置Vim使用的shell为msysGit的shell
 ":set shell=\"c:\program\ files\unix\sh.exe\"\ -f
-:set shell="C:\Program Files\Git\bin\sh.exe" -f
+":set shell="C:\Program Files\Git\bin\sh.exe" -f
 
 "F5键插入当前系统的时间
-:nnoremap <F5> "=strftime("%Y%m%d %T")<CR>p
-:inoremap <F5> <C-R>=strftime("%Y%m%d %T")<CR>p
+":nnoremap <F5> "=strftime("%Y%m%d %T")<CR>p
+":inoremap <F5> <C-R>=strftime("%Y%m%d %T")<CR>p
 
-""""""""""""""""""""""
-"下面是关于Vundle插件的设置
-filetype off
-"Vundle的路径
-set rtp+=$VIM/vimfiles/bundle/Vundle.vim
-"插件的安装路径
-call vundle#begin('$VIM/vimfiles/bundle/')
-Plugin 'gmarik/Vundle.vim'
-Plugin 'L9'
+nnoremap <F5> "=strftime("%Y年%m月%d日")<CR>P
+inoremap <F5> <C-R>=strftime("%Y年%m月%d日")<CR>
 
-call vundle#end()
-filetype plugin indent on
+:nnoremap <F4> :!ctags -R<CR>
 
-Bundle 'OmniCppComplete'
-Bundle 'winmanager'
-Bundle 'taglist.vim'
-Bundle 'SuperTab'
-Bundle 'tpope/vim-surround.git'
-""""""""""""""""""""""""""""
+
+"nnoremap <leader>r :!%<CR>
+nnoremap <leader>r :execute "!".iconv('"'.@%.'"','UTF-8','cp936')<CR>
+"nnoremap ;cc ^v$"mc:<C-r>c<cr>
+nnoremap <leader>R ^Vy:!<C-r>"<CR>
+vmap <leader>R y:!<C-r>"<CR>
+
+nnoremap <leader>h :shell<CR>
+:set noswapfile  "禁止产生中间文件
+:set autoread
+
+"将<C-l>键用于关闭高亮显示
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+
+runtime macros/matchit.vim
+
+"fast reloading of the.vimrc
+map <silent> <leader>w :source $VIM/_vimrc<cr>
+"fast editing of.vimrc
+"map <silent> <leader>e :e $VIM/_vimrc<cr>
+
+"when .vimrc is edited ,reloadit
+autocmd! bufwritepost bobo_vimrc source $VIM/_vimrc
+
+set path+=C:/eDisk/13-4G/4Gv2/SecSuit/proj/Linux/auditserver/*
+
+"YouCompleteMe
+"set runtimepath+=$VIM/vimfiles/bundle/YouCompleteMe/
+
+"Vundle
+"filetype off  
+" 此处规定Vundle的路径  
+"set rtp+=$VIM/vimfiles/bundle/vundle.vim/  
+"call vundle#rc('$VIM/vimfiles/bundle/')  
+"Bundle 'gmarik/vundle'  
+"filetype plugin indent on  
+  
+" original repos on github<br>Bundle 'mattn/zencoding-vim'  
+"Bundle 'drmingdrmer/xptemplate'  
+"Bundle 'tpope/vim-commentary'
+"Bundle 'tpope/vim-unimpaired'
+"Bundle 'tpope/vim-surround'
+
+"Bundle 'kana/vim-textobj-entire'
+"Bundle 'kana/vim-textobj-lastpat'
+"Bundle 'tpope/vim-abolish'
+
+" vim-scripts repos  
+"Bundle 'L9'  
+"Bundle 'FuzzyFinder'  
+"Bundle 'bufexplorer.zip'  
+"Bundle 'taglist.vim'  
+"Bundle 'Mark'  
+"Bundle 'The-NERD-tree'  
+"Bundle 'matrix.vim'  
+"Bundle 'closetag.vim'  
+"Bundle 'The-NERD-Commenter'  
+"Bundle 'matchit.zip'  
+"Bundle 'AutoComplPop'  
+"Bundle 'jsbeautify'  
+"Bundle 'YankRing.vim'  
+   
+"filetype plugin indent on     " required! 

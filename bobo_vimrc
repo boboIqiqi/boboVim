@@ -1,9 +1,14 @@
 ":setlocal makeprg=ndk-build
-:setlocal makeprg=%NDK64_HOME%\ndk-build\ NDK_PROJECT_PATH=.\ APP_BUILD_SCRIPT=./Android.mk\ APP_ABI=arm64-v8a
+":setlocal makeprg=%NDK64_HOME%\ndk-build\ NDK_PROJECT_PATH=.\ APP_BUILD_SCRIPT=./Android.mk\ APP_ABI=arm64-v8a
 ":setlocal efm=%f:%l:%m
 
+"set spell
+"set spellfile=$VIMRUNTIME\spell\MCtrl.add
 "增加按十进制
 set nrformats-=octal
+
+"设置折叠格式
+"set foldmethod=syntax
 
 if has("gui_running")
     set encoding=utf-8
@@ -25,7 +30,35 @@ if has("gui_running")
     language messages zh_CN.utf-8
 endif
  
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+"set diffexpr=MyDiff()
+"function MyDiff()
+"  let opt = '-a --binary '
+"  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+"  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+"  let arg1 = v:fname_in
+"  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+"  let arg2 = v:fname_new
+"  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+"  let arg3 = v:fname_out
+"  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+"  let eq = ''
+"  if $VIMRUNTIME =~ ' '
+"    if &sh =~ '\<cmd'
+"      let cmd = '""' . $VIMRUNTIME . '\diff"'
+"      let eq = '"'
+"    else
+"      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+"    endif
+"  else
+"    let cmd = $VIMRUNTIME . '\diff'
+"  endif
+"  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+"endfunction
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
  
 " 设置图形界面。
 "
@@ -47,8 +80,8 @@ if has("gui_running")
 "        set guifontwide=幼圆:h13:cGB2312
     else
         " 设定 linux 下图形界面下的字体，该字体 Fedora 7 自带
-        " set guifont=DejaVu\ LGC\ Sans\ Mono\ 14
-        set guifont=YaHei_Consolas_Hybrid:h12:cGB2312
+        set guifont=DejaVu\ LGC\ Sans\ Mono\ 12
+        "set guifont=YaHei_Consolas_Hybrid:h12:cGB2312
     endif
 endif
  
@@ -229,6 +262,7 @@ nnoremap <Leader>s :w<CR>
 "退出快捷键
 nnoremap <Leader>x :x<CR>
 nnoremap <Leader>q :q!<CR>
+nnoremap <Leader>e :%s/\r//g<CR>
 
 set clipboard=unnamed  "共享剪切板
 "普通模式下换行
@@ -291,8 +325,8 @@ set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 nnoremap <F5> "=strftime("%Y年%m月%d日")<CR>P
 inoremap <F5> <C-R>=strftime("%Y年%m月%d日")<CR>
 
-:nnoremap <F4> :!ctags -R<CR>
-
+:nnoremap <leader>c :!ctags -R<CR>
+:nnoremap <leader>T :!ctags -R<CR>
 
 "nnoremap <leader>r :!%<CR>
 nnoremap <leader>r :execute "!".iconv('"'.@%.'"','UTF-8','cp936')<CR>
@@ -315,9 +349,15 @@ map <silent> <leader>w :source $VIM/_vimrc<cr>
 "map <silent> <leader>e :e $VIM/_vimrc<cr>
 
 "when .vimrc is edited ,reloadit
-autocmd! bufwritepost bobo_vimrc source $VIM/_vimrc
+"autocmd! bufwritepost bobo_vimrc source $VIM/_vimrc
 
 set path+=C:/eDisk/13-4G/4Gv2/SecSuit/proj/Linux/auditserver/*
+
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [B :bfirst<CR>
+nnoremap <silent> ]B :bLast<CR>
+
 
 "YouCompleteMe
 "set runtimepath+=$VIM/vimfiles/bundle/YouCompleteMe/

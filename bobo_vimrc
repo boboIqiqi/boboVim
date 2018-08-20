@@ -5,10 +5,18 @@
 "set spell
 "set spellfile=$VIMRUNTIME\spell\MCtrl.add
 "增加按十进制
-set nrformats-=octal
-
+"set nrformats-=octal
+"
 "设置折叠格式
 "set foldmethod=syntax
+
+set number relativenumber
+augroup numbertoggle
+autocmd!
+autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
 
 if has("gui_running")
     set encoding=utf-8
@@ -29,7 +37,7 @@ if has("gui_running")
     "解决consle输出乱码
     language messages zh_CN.utf-8
 endif
- 
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
  
 " 设置图形界面。
@@ -201,14 +209,28 @@ set nocompatible
 
 """"我的设置
 let mapleader = "\<Space>"
+
+cnoremap <expr> %% getcmdtype()==':' ? expand('%:h').'/' : '%%'
+
 nnoremap <Leader>s :w<CR>
+nnoremap <Leader>m :update<CR>:make<CR>
+nnoremap <Leader>l :ls<CR>
+nnoremap <Leader>a *:vim///g *.c *.h<CR>
+nnoremap <Leader>C :%s///gn<CR>
+nnoremap <Leader>U gUaw<CR>
+nmap <F6> :cp<CR>
+nmap <F7> :cn<CR>
+
+nnoremap <Leader>w <C-W><C-W><CR>
 
 "退出快捷键
 nnoremap <Leader>x :x<CR>
 nnoremap <Leader>q :q!<CR>
-nnoremap <Leader>e :%s/\r//g<CR>
 
+nnoremap <Leader>E :%s/\r//g<CR>
+nnoremap <Leader>e :e.<CR>
 set clipboard=unnamed  "共享剪切板
+
 "普通模式下换行
 :nnoremap <C-j> i<C-j><Esc>
 :nnoremap <C-k> a<C-j><Esc>
@@ -219,9 +241,10 @@ nnoremap <Leader>1 I#
 nnoremap <Leader>2 I## 
 nnoremap <Leader>3 I### 
 nnoremap <Leader>4 I#### 
+nnoremap <Leader>5 I##### 
 
 "关于定位到开头与结尾
-nnoremap <CR> G
+"nnoremap <CR> G
 nnoremap <BS> gg
 
 "nnoremap <C-2> ## 
@@ -233,14 +256,21 @@ nnoremap <BS> gg
 ":nnoremap <C-c> 0i//<Esc>
 ":nnoremap <C-y> 0xx
 
-
 noremap <C-S>		:update<CR>
 vnoremap <C-S>		<C-C>:update<CR>
 inoremap <C-S>		<C-O>:update<CR><ESC>
 
-"启动后最大化
+"启动后最大化,only can be used in windows
 "autocmd GUIENTER * simalt ~x
 
+command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
+function! QuickfixFilenames()
+    let buffer_numbers = {}
+    for quickfix_item in getqflist()
+        let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+    endfor
+    return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+endfunction
 
 set number
 colorscheme desert
@@ -269,8 +299,12 @@ set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 nnoremap <F5> "=strftime("%Y年%m月%d日")<CR>P
 inoremap <F5> <C-R>=strftime("%Y年%m月%d日")<CR>
 
+:set tags=./tags,tags
+:set autochdir
+
 :nnoremap <leader>c :!ctags -R<CR>
 :nnoremap <leader>T :!ctags -R<CR>
+":nnoremap <leader>t :!make clean && make && ./main<CR>
 
 "nnoremap <leader>r :!%<CR>
 nnoremap <leader>r :execute "!".iconv('"'.@%.'"','UTF-8','cp936')<CR>
@@ -288,7 +322,7 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 runtime macros/matchit.vim
 
 "fast reloading of the.vimrc
-map <silent> <leader>w :source $VIM/_vimrc<cr>
+"map <silent> <leader>w :source $VIM/_vimrc<cr>
 "fast editing of.vimrc
 "map <silent> <leader>e :e $VIM/_vimrc<cr>
 

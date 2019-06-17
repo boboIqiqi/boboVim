@@ -1,7 +1,6 @@
 ":setlocal makeprg=ndk-build
 ":setlocal makeprg=%NDK64_HOME%\ndk-build\ NDK_PROJECT_PATH=.\ APP_BUILD_SCRIPT=./Android.mk\ APP_ABI=arm64-v8a
 ":setlocal efm=%f:%l:%m
-
 "set spell
 "set spellfile=$VIMRUNTIME\spell\MCtrl.add
 "增加按十进制
@@ -9,69 +8,65 @@
 "
 "设置折叠格式
 "set foldmethod=syntax
-
 "set number relativenumber
 "augroup numbertoggle
 "autocmd!
 "autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
 "autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 "augroup END
-
-
-if has("gui_running")
-    set encoding=utf-8
-    set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
- 
-    if has("win32")
-        set fileencoding=utf-8
-    else
-       set fileencoding=utf-8
-    endif
- 
-    let &termencoding = &encoding
- 
-    "解决菜单乱码
-    source $VIMRUNTIME/delmenu.vim
-    source $VIMRUNTIME/menu.vim
- 
-    "解决consle输出乱码
-    language messages zh_CN.utf-8
-endif
-
+"
+"if has("gui_running")
+"    set encoding=utf-8
+"    set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+" 
+"    if has("win32")
+"        set fileencoding=utf-8
+"    else
+"       set fileencoding=utf-8
+"    endif
+" 
+"    let &termencoding = &encoding
+" 
+"    "解决菜单乱码
+"    source $VIMRUNTIME/delmenu.vim
+"    source $VIMRUNTIME/menu.vim
+" 
+"    "解决consle输出乱码
+"    language messages zh_CN.utf-8
+"endif
+"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
- 
 " 设置图形界面。
 "
 " 字体部分，可参考《程序员最喜欢用的编程字体》一文：
 " http://www.2maomao.com/blog/best-programmer-fonts/
- 
+"
 "如果你的字体名中有空格或者逗号, 你就需要用一个反斜线转义了. 如:
 "set guifont=Courier\ New\ 12
- 
-if has("gui_running")
-    if has("win32")
-        " 设定 windows 下 gvim 启动时最大化
-        autocmd GUIEnter * simalt ~x
-        " 设定 windows 下图形界面下的字体。该字体需要自己下载安装，下载地址：
-        " http://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/1.10/ttf-bitstream-vera-1.10.zip
-        " set guifont=Bitstream_Vera_Sans_Mono:h14:cANSI
-        " 下面这个是我自己喜欢的一个字体
-        "set guifont=YaHei_Consolas_Hybrid:h12:cGB2312
-"        set guifontwide=幼圆:h13:cGB2312
-    else
-        " 设定 linux 下图形界面下的字体，该字体 Fedora 7 自带
-        set guifont=DejaVu\ LGC\ Sans\ Mono\ 12
-        "set guifont=YaHei_Consolas_Hybrid:h12:cGB2312
-    endif
-endif
- 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
- 
-if has("gui_running")
-    colorscheme desert "or koehler
-else
-    colorscheme evening
-endif
+"if has("gui_running")
+"    if has("win32")
+"        " 设定 windows 下 gvim 启动时最大化
+"        autocmd GUIEnter * simalt ~x
+"        " 设定 windows 下图形界面下的字体。该字体需要自己下载安装，下载地址：
+"        " http://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/1.10/ttf-bitstream-vera-1.10.zip
+"        " set guifont=Bitstream_Vera_Sans_Mono:h14:cANSI
+"        " 下面这个是我自己喜欢的一个字体
+"        "set guifont=YaHei_Consolas_Hybrid:h12:cGB2312
+""        set guifontwide=幼圆:h13:cGB2312
+"    else
+"        " 设定 linux 下图形界面下的字体，该字体 Fedora 7 自带
+"        set guifont=DejaVu\ LGC\ Sans\ Mono\ 12
+"        "set guifont=YaHei_Consolas_Hybrid:h12:cGB2312
+"    endif
+"endif
+" 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 
+"if has("gui_running")
+"    colorscheme desert "or koehler
+"else
+"    colorscheme evening
+"endif
 "evening         " 设定背景为夜间模式
 filetype plugin on          " 自动识别文件类型，自动匹配对应的
                             " “文件类型Plugin.vim”文件，使用缩进定义文件
@@ -82,17 +77,17 @@ set autochdir               " 自动切换当前目录为当前文件所在的�
 set autoindent cindent cinoptions=g0
                             " 打开自动缩进和 C 语言风格的缩进模式，
                             " 定制 C 语言缩进风格
-set backspace=indent,eol,start
+"set backspace=indent,eol,start
                             " 不设定的话在插入状态无法用退格键和 Delete
                             " 键删除回车符
 set backupcopy=yes          " 设置备份时的行为为覆盖
- 
-if v:version >= 700
-    set completeopt=menu,longest,preview
-                            " 自动补全(ctrl-p)时的一些选项：
+
+"if v:version >= 700
+"    set completeopt=menu,longest,preview
+"                            " 自动补全(ctrl-p)时的一些选项：
                             " 多于一项时显示菜单，最长选择，
                             " 显示当前选择的额外信息
-endif
+"endif
  
 set fileformat=dos          " unix|dos|mac，在windos下unix格式不换行。
 set confirm                 " 用确认对话框（对于 gvim）或命令行选项（对于
@@ -164,20 +159,20 @@ set statusline=%F%m%r\ \|\ %{&ff},%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+b
 autocmd BufReadPost * cd %:p:h
  
 "cscope
-"if has("cscope")
-"    set csprg=/usr/bin/cscope
-"    set csto=0
-"    set cst
-"    set nocsverb
-"    " add any database in current directory
-"    if filereadable("cscope.out")
-"        cs add cscope.out
-"    " else add database pointed to by environment
-"    elseif $CSCOPE_DB != ""
-"        cs add $CSCOPE_DB
-"    endif
-"    set csverb
-"endif
+if has("cscope")
+    set csprg=/usr/bin/cscope
+    set csto=0
+    set cst
+    set nocsverb
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+    " else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+    set csverb
+endif
 "for omnicppcomplete
 set nocp
 let OmniCpp_MayCompleteScope = 1
@@ -264,7 +259,6 @@ inoremap <C-S>		<C-O>:update<CR><ESC>
 "启动后最大化,only can be used in windows
 "autocmd GUIENTER * simalt ~x
 
-"经典的多文件替换方式
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
 function! QuickfixFilenames()
     let buffer_numbers = {}
@@ -298,8 +292,8 @@ set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 ":nnoremap <F5> "=strftime("%Y%m%d %T")<CR>p
 ":inoremap <F5> <C-R>=strftime("%Y%m%d %T")<CR>p
 
-nnoremap <F5> "=strftime("%Y.%m.%d")<CR>P
-inoremap <F5> <C-R>=strftime("%Y.%m.%d")<CR>
+nnoremap <F5> "=strftime("%Y年%m月%d日")<CR>P
+inoremap <F5> <C-R>=strftime("%Y年%m月%d日")<CR>
 
 :set tags=./tags,tags
 :set autochdir
@@ -339,19 +333,6 @@ nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :bLast<CR>
 
 
-cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
-map <leader>ew :e %% <CR>
-map <leader>es :sp %%
-map <leader>ev :vsp %%
-map <leader>et :tabe %%
-
-
-" select last paste in visual mode
-nnoremap <expr> gb '`['.strpart(getregtype(), 0, 1).'`]'
-
-
-set gfn=新宋体:h12
-
 "YouCompleteMe
 "set runtimepath+=$VIM/vimfiles/bundle/YouCompleteMe/
 
@@ -387,5 +368,4 @@ set gfn=新宋体:h12
 "Bundle 'AutoComplPop'  
 "Bundle 'jsbeautify'  
 "Bundle 'YankRing.vim'  
-   
 "filetype plugin indent on     " required! 
